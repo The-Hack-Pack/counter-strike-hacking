@@ -1,0 +1,29 @@
+name: counter-strike
+services:
+  server:
+    build: .
+    platform: linux/amd64
+    restart: unless-stopped
+    init: true
+    ports:
+      - "${BIND_IP:-0.0.0.0}:${PORT:-27015}:27015/udp"
+    environment:
+      MAP: ${MAP:-de_dust2}
+      MAXPLAYERS: ${MAXPLAYERS:-16}
+    volumes:
+      - game-data:/data
+      - ./server.cfg:/config/server.cfg:ro
+      - ./mapcycle.txt:/config/mapcycle.txt:ro
+    healthcheck:
+      test: ["CMD", "python3", "/opt/probe.py", "127.0.0.1", "--query-only"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15m
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+volumes:
+  game-data:
