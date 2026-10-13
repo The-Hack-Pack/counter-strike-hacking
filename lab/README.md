@@ -23,6 +23,30 @@ same-user debugger or memory scanner to attach to this process. Use `--team t`
 or `--team ct` to select a team automatically. Additional clients on one
 machine need distinct bridge ports, such as `--port 49200`.
 
+### macOS native client
+
+The same launcher accepts the supplied `CS16Client.app` on macOS. Run from the
+repository root, adjusting the app path if you moved it to Applications:
+
+```bash
+python3 lab/launch.py ../CS16Client.app --server cs.mahaloz.re:27015 --name Student
+# Forward engine options after --, for example:
+python3 lab/launch.py /Applications/CS16Client.app --name Student -- -width 1280 -height 800
+```
+
+The launcher runs the bundle's native executable and queues the connection with
+the engine. The app handles its bundled libraries and assets; settings,
+downloads, `launcher.log`, and `engine.log` live in
+`~/Library/Application Support/CS16Client/`. The app also accepts an absolute
+`CS16CLIENT_USERDIR` environment override for a separate settings directory.
+Ctrl-C in the launcher terminal stops the client.
+
+The supplied macOS app is the stock native client. The Linux overlay archive
+and installer cannot be installed into it. Select a team in the game menu;
+`--team` is rejected for this client. F5–F11 lab features, Python bot control,
+and the UDP bridge require the Linux lab overlay. `--port` and `--debug` only
+apply to Linux launches.
+
 ## Controls
 
 Open the game console with the backtick key.

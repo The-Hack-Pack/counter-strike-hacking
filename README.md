@@ -25,8 +25,8 @@ Select `Xash3D 49` in the top bar, and add `cs.mahaloz.re`.
 Instead of using the default client, you can use our modified hacked client.
 Clone this repo down and do the following:
 ```bash
-python3 install.py ../CS16Client-Linux-x86_64/ # path to the client folder
-python3 launch.py ../CS16Client-Linux-x86_64 --server cs.mahaloz.re:27015 --name YourName --debug
+python3 lab/install.py ../CS16Client-Linux-x86_64/ # path to the client folder
+python3 lab/launch.py ../CS16Client-Linux-x86_64 --server cs.mahaloz.re:27015 --name YourName --debug
 ```
 
 This will start you up in the hacked client, and make it easier to debug your own client.
@@ -41,6 +41,17 @@ You can use any of the following keys to trigger hacked behavior.
 | F9 | Cycle simulation speed through 1×, 2×, 3× |
 | F10 | Clear source features and restore speed to 1× |
 | F11 | Print client state and memory addresses |
+
+On macOS, launch the native app directly with the same launcher:
+
+```bash
+python3 lab/launch.py ../CS16Client.app --server cs.mahaloz.re:27015 --name YourName
+```
+
+This connects the supplied Mac client to the server. Select your team in the
+game menu. The overlay installer, F5–F11 features, bridge, and `--team` automation
+require the Linux lab client; `--debug` only changes Linux debugger permissions.
+See [lab/README.md](lab/README.md) for settings and log locations.
 
 
 ## Demos
