@@ -51,6 +51,7 @@ You will find demo information and scripts inside of `./demos`. Each demo below 
 
 ### Demo2: Speed Hacks (BHop)
 - The client enforces how fast you can click the space bar
+- Also found in source [here](https://github.com/Velaron/cs16-client/blob/9778fec4c6f956d2b483949feb704fb479c92f7f/pm_shared/pm_shared.cpp#L2427)
 - We can find it in the binary: 0xa9950
 - We can modify it to allow us to always jump fast!
 - Use `F8`
