@@ -30,5 +30,44 @@ python3 launch.py ../CS16Client-Linux-x86_64 --server cs.mahaloz.re:27015 --name
 ```
 
 This will start you up in the hacked client, and make it easier to debug your own client.
+You can use any of the following keys to trigger hacked behavior.
+
+| Key | Action |
+|---|---|
+| F5 | Toggle wall boxes |
+| F6 | Toggle radar |
+| F7 | Toggle head aiming while attack is held |
+| F8 | Toggle repeated jumping while jump is held |
+| F9 | Cycle simulation speed through 1×, 2×, 3× |
+| F10 | Clear source features and restore speed to 1× |
+| F11 | Print client state and memory addresses |
 
 
+## Demos
+You will find demo information and scripts inside of `./demos`. Each demo below demonstrates a different idea behind game hacking
+
+### Demo1: Infinite Ammo (Client)
+- Find ammo value in memory and modify it
+
+### Demo2: Speed Hacks (BHop)
+- The client enforces how fast you can click the space bar
+- We can find it in the binary: 0xa9950
+- We can modify it to allow us to always jump fast!
+- Use `F8`
+
+### Demo3: Walls & Radar
+- Map resources are just a construct!
+- Toggle with `F5`, `F6`, we can draw our own things
+
+### Demo4: Aimbot
+- Toggle with `F7`
+
+### Demo5: Our own client! 
+- Use the provided bot in the lab
+```bash
+python3 lab/bot.py --runtime .lab/bot --headless --visualize
+```
+
+## Modifying Your Client
+- Open up Codex/Claude Code
+- Request a feature in the `bot.py` or in your human client
