@@ -6,13 +6,13 @@ Brought to you by The Hack Pack.
 ## Getting Started
 
 We are playing Counter Strike 1.6. This is an oldver version of the famous Counter Strike: Global Offensive.
-If you want to run the server yourself, follow the [server/README.md](server/README.md)
+If you want to run the server yourself, follow the [server/README.md](server/README.md).
 
 ### Dowload The Client 
 If you are student, download the modified client below to start. The password will be given in-person:
 https://drive.proton.me/urls/M7E7QEVZ78#fmKicUj0FtAc
 
-It is reccomend you use the Linux version if you plan to hack, else you can use any OS.
+It is reccomend you use the Linux version if you plan to hack, else you can use any OS. This client is based on the reverse engineered client [cs16](https://github.com/Velaron/cs16-client). You can modify the source yourself to create your own hacked client. Using Codex or Claude Code to help is reccomended.
 
 ### Join The Server
 You can find the live server at `cs.mahaloz.re`. To join, once you start the game, go to:
