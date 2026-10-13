@@ -2,6 +2,12 @@
 lab/dist/
 __pycache__/
 *.pyc
+# Local game runtime and controller recordings.
+/CS16Client-Linux-x86_64/
+/*.engine.log
+/*.jsonl
+/bot-demo.json
+/lab/*.engine.log
 # Instructor plans are kept outside this repository.
 lecture.md
 demo-card.md

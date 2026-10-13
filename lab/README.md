@@ -66,6 +66,33 @@ python3 lab/tools/memscan.py --pid GAME_PID --module libxash.so
 Module filtering includes contiguous anonymous BSS. Writes require a selected
 writable address. Addresses vary across runs.
 
+For an interactive search inside GDB or GEF, pause the game and source
+[gdb_ammo.py](tools/gdb_ammo.py), using its absolute path if GDB's working
+directory differs from the repository root:
+
+```gdb
+source lab/tools/gdb_ammo.py
+ammo-scan 20
+```
+
+The command scans writable memory for aligned 32-bit integers containing 20,
+saves every candidate address, and resumes the game. Fire one shot, then Ctrl-C
+in the GDB terminal: it filters the same addresses for 19. Press Enter at the
+scanner prompt to resume and repeat for 18, 17, and so on; enter `q` to finish
+with the game paused and results retained. A numeric response retries the saved
+candidates at that actual clip count if you fired extra shots. A failed filter
+keeps the preceding candidates. Other breakpoints/signals return control to GDB.
+
+```gdb
+ammo-list 0
+ammo-save /tmp/ammo-search.json
+```
+
+`ammo-run` resumes an existing search, and `ammo-refine VALUE` filters it once
+without resuming. An optional module argument narrows the initial search:
+`ammo-scan 20 client_amd64.so`, including its adjacent anonymous BSS. The script
+uses GDB's memory API and does not modify game memory.
+
 Quit the game before applying the separate clip-display instruction patch:
 
 ```bash
@@ -81,7 +108,7 @@ This changes the local clip display; server ammo remains authoritative.
 Install the overlay into a separate runtime for the bot:
 
 ```bash
-python3 lab/bot.py --runtime /path/to/bot-runtime --server cs.mahaloz.re:27015 --team t --seconds 60 --record bot.jsonl
+python3 lab/bot.py --runtime /path/to/bot-runtime --server cs.mahaloz.re:27015 --team t --visualize --seconds 60 --record bot.jsonl
 ```
 
 Python chooses movement, searches the Dust2 waypoint graph with A*, selects
@@ -89,8 +116,24 @@ opponents, and aims/fires. The native engine provides network transport,
 prediction, and animated pose data. Add `--headless` for Xvfb and software
 OpenGL, or use the normal window. Ctrl-C cleans up the bot; external actions
 expire after 250 ms without updates. The supplied graph is specific to Dust2,
-and navigation is approximate. Avoid running another telemetry receiver on the
-bot's port while its controller is active.
+and navigation is approximate. After 1.2 seconds without progress toward its next
+waypoint, the bot tries a jump with a short randomized sidestep. Recovery retries
+have a cooldown, prefer the clearer side, and appear as `unstick` in the live
+map and decision log. Avoid running another telemetry receiver on the bot's
+port while its controller is active.
+
+The bot's default in-game name is `mahaloz-bot`; override it with `--name`.
+`--visualize` prints a local browser URL (by default
+`http://127.0.0.1:49302/`) with the bot's position and facing, planned A* route,
+goal, recent movement, observed players, and selected target. It uses the Dust2
+overview from the bot runtime when available, otherwise the waypoint graph.
+Cached player observations appear as fading hollow markers. The sidebar shows
+the current decision, health, and clip count. The viewer works with `--headless`
+and shares the controller's observations without taking another telemetry port.
+Use `--visualize-port` to choose a different HTTP port. For a remote controller,
+forward that port with SSH, for example `ssh -L 49302:127.0.0.1:49302 HOST`,
+then open the URL locally. The viewer listens only on loopback and closes when
+the controller exits. Decision recordings also include the name, route, and goal.
 
 ## Build and package
 

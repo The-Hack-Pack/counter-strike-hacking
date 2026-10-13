@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mahaloz-bot · Live map</title>
+<style>
+  :root { color-scheme: dark; font: 15px system-ui, sans-serif; background: #111820; color: #e6edf3; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; }
+  header { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+  h1 { font-size: 24px; margin: 0; }
+  #connection { color: #a0b0c0; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; max-width: 1440px; }
+  #map-wrap { height: min(76vh, 850px); min-height: 400px; background: #0c1219; border: 1px solid #2c3b4c; border-radius: 10px; overflow: hidden; }
+  canvas { width: 100%; height: 100%; display: block; }
+  aside { background: #18232f; border-radius: 10px; padding: 20px; }
+  h2 { font-size: 14px; color: #a0b0c0; font-weight: 500; margin: 0 0 6px; }
+  #mode { font-size: 27px; margin-bottom: 24px; text-transform: capitalize; }
+  dl { margin: 0 0 24px; }
+  dt { color: #a0b0c0; margin-top: 14px; }
+  dd { margin: 4px 0 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  label { display: block; margin: 12px 0; cursor: pointer; }
+  input { accent-color: #5ad5c5; }
+  .legend { margin-top: 24px; line-height: 1.9; color: #b8c6d5; font-size: 13px; }
+  .key { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+  p { color: #8d9fb0; font-size: 13px; line-height: 1.6; }
+  @media (max-width: 800px) { body { padding: 14px; } main { grid-template-columns: 1fr; } #map-wrap { height: 65vh; } }
+</style>
+<header><h1 id="name">mahaloz-bot</h1><span id="connection" role="status">Waiting for bot telemetry…</span></header>
+<main>
+  <div id="map-wrap"><canvas id="map" aria-label="Live map of the bot, its route, and observed players"></canvas></div>
+  <aside>
+    <h2>Current decision</h2><div id="mode">Waiting</div>
+    <dl>
+      <dt>Map</dt><dd id="map-name">de_dust2</dd>
+      <dt>Status</dt><dd id="status">Joining the game</dd>
+      <dt>Position (x, y, z)</dt><dd id="position">—</dd>
+      <dt>Target</dt><dd id="target">—</dd>
+      <dt>Remaining waypoints</dt><dd id="route-count">0</dd>
+      <dt>Health / clip</dt><dd id="health">—</dd>
+    </dl>
+    <label><input id="show-graph" type="checkbox"> Show waypoint graph</label>
+    <label><input id="show-trail" type="checkbox" checked> Show recent movement</label>
+    <div class="legend">
+      <div><span class="key" style="background:#5ad5c5"></span>Bot and planned route</div>
+      <div><span class="key" style="background:#74b5ff"></span>Teammate</div>
+      <div><span class="key" style="background:#ff8274"></span>Opponent</div>
+      <div><span class="key" style="background:#ffd166"></span>Target and route goal</div>
+      <div>Hollow markers: cached observations</div>
+    </div>
+    <p id="map-note">Map shows the waypoint graph.</p>
+    <p>Player positions come from the bot's own view. Last-known positions fade as observations age.</p>
+  </aside>
+</main>
+<script>
+const canvas = document.getElementById('map'), ctx = canvas.getContext('2d');
+const el = id => document.getElementById(id);
+let graph, latest, overviewImage, width, height, project, trail = [], lastSequence, lastSlot;
+const colors = { bot: '#5ad5c5', ally: '#74b5ff', enemy: '#ff8274', target: '#ffd166' };
+
+function resize() {
+  width = canvas.clientWidth; height = canvas.clientHeight;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  draw();
+}
+
+function projection() {
+  if (overviewImage) {
+    const o = graph.overview, span = 8192 / o.zoom;
+    const scale = Math.min((width - 32) / overviewImage.width, (height - 32) / overviewImage.height);
+    const w = overviewImage.width * scale, h = overviewImage.height * scale;
+    const left = (width - w) / 2, top = (height - h) / 2;
+    ctx.globalAlpha = 0.72; ctx.drawImage(overviewImage, left, top, w, h); ctx.globalAlpha = 1;
+    return p => o.rotated
+      ? [left + (.5 + (p[0] - o.origin[0]) / span) * w, top + (.5 - (p[1] - o.origin[1]) / (span * .75)) * h]
+      : [left + (.5 - (p[1] - o.origin[1]) / span) * w, top + (.5 - (p[0] - o.origin[0]) / (span * .75)) * h];
+  }
+  const xs = graph.nodes.map(n => n.origin[0]), ys = graph.nodes.map(n => n.origin[1]);
+  const xmin = Math.min(...xs) - 160, xmax = Math.max(...xs) + 160;
+  const ymin = Math.min(...ys) - 160, ymax = Math.max(...ys) + 160;
+  const scale = Math.min((width - 32) / (xmax - xmin), (height - 32) / (ymax - ymin));
+  const left = (width - (xmax - xmin) * scale) / 2, top = (height - (ymax - ymin) * scale) / 2;
+  return p => [left + (p[0] - xmin) * scale, top + (ymax - p[1]) * scale];
+}
+
+function line(points, color, thickness, dashed = false) {
+  if (points.length < 2) return;
+  ctx.beginPath(); points.map(project).forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y));
+  ctx.strokeStyle = color; ctx.lineWidth = thickness; ctx.setLineDash(dashed ? [6, 5] : []); ctx.stroke(); ctx.setLineDash([]);
+}
+
+function marker(origin, color, radius, filled = true) {
+  const [x, y] = project(origin);
+  ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.strokeStyle = color; ctx.lineWidth = 2;
+  if (filled) { ctx.fillStyle = color; ctx.fill(); } else ctx.stroke();
+  return [x, y];
+}
+
+function label(text, x, y, color) {
+  ctx.font = '12px system-ui'; ctx.lineWidth = 4; ctx.strokeStyle = '#0c1219';
+  ctx.strokeText(text, x, y); ctx.fillStyle = color; ctx.fillText(text, x, y);
+}
+
+function draw() {
+  if (!graph || !width) return;
+  ctx.clearRect(0, 0, width, height); project = projection();
+  const showGraph = el('show-graph').checked || !overviewImage;
+  if (showGraph) {
+    ctx.strokeStyle = overviewImage ? '#a4bdd050' : '#334e6380'; ctx.lineWidth = 1; ctx.beginPath();
+    for (const node of graph.nodes) {
+      const [x, y] = project(node.origin);
+      for (const link of node.links) {
+        const [tx, ty] = project(graph.nodes[link.to].origin);
+        ctx.moveTo(x, y); ctx.lineTo(tx, ty);
+      }
+    }
+    ctx.stroke();
+  }
+  const snapshot = latest?.snapshot;
+  if (!snapshot) return;
+  const local = snapshot.state.local, route = snapshot.route || [];
+  if (el('show-trail').checked) line(trail, '#5ad5c560', 2);
+  if (local.alive) line([local.origin, ...route.map(id => graph.nodes[id].origin)], colors.bot, 3);
+  if (snapshot.goal != null && graph.nodes[snapshot.goal]) {
+    const [x, y] = marker(graph.nodes[snapshot.goal].origin, colors.target, 7, false);
+    label('goal', x + 10, y + 4, colors.target);
+  }
+  const target = snapshot.state.players.find(p => p.slot === snapshot.target);
+  if (target && local.slot) line([local.origin, target.origin], colors.target, 2, true);
+  for (const player of snapshot.state.players) {
+    if (player.slot === local.slot || player.dead || player.age > 10 || ![1, 2].includes(player.team)) continue;
+    const color = player.slot === snapshot.target ? colors.target : player.team === local.team ? colors.ally : colors.enemy;
+    ctx.globalAlpha = player.fresh ? 1 : Math.max(.2, 1 - player.age / 10);
+    const [x, y] = marker(player.origin, color, 5, player.fresh);
+    if (player.slot === snapshot.target) marker(player.origin, color, 10, false);
+    label(player.name + (player.fresh ? '' : ` (${player.age.toFixed(1)}s)`), x + 9, y - 9, color);
+    ctx.globalAlpha = 1;
+  }
+  if (local.slot && [1, 2].includes(local.team)) {
+    const [x, y] = marker(local.origin, colors.bot, 8, local.alive);
+    const yaw = local.view[1] * Math.PI / 180;
+    const tip = project([local.origin[0] + Math.cos(yaw) * 100, local.origin[1] + Math.sin(yaw) * 100]);
+    ctx.strokeStyle = colors.bot; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(...tip); ctx.stroke();
+    label(snapshot.name, x + 12, y + 18, colors.bot);
+  }
+}
+
+function updateState(data) {
+  latest = data; el('name').textContent = data.name; document.title = data.name + ' · Live map';
+  const snapshot = data.snapshot;
+  el('connection').textContent = !snapshot ? 'Waiting for bot telemetry…' : data.age > 2 ? 'Telemetry paused · last update ' + data.age.toFixed(1) + 's ago' : 'Live · 10 updates/sec';
+  if (!snapshot) return draw();
+  const local = snapshot.state.local, target = snapshot.state.players.find(p => p.slot === snapshot.target);
+  el('mode').textContent = snapshot.mode;
+  el('map-name').textContent = snapshot.state.map.replace(/^maps\//, '').replace(/\.bsp$/, '');
+  el('status').textContent = !local.slot || ![1, 2].includes(local.team) ? 'Joining the game' : (local.alive ? 'Alive' : 'Dead / waiting for respawn') + (local.team === 1 ? ' · T' : ' · CT');
+  el('position').textContent = local.origin.map(v => v.toFixed(0)).join(', ');
+  el('target').textContent = target ? `${target.name} · slot ${target.slot}` : '—';
+  el('route-count').textContent = (snapshot.route || []).length;
+  el('health').textContent = `${local.health} HP / ${local.clip_hud < 0 ? '—' : local.clip_hud}`;
+  if (local.slot !== lastSlot || !local.alive) trail = [];
+  if (snapshot.sequence !== lastSequence && local.alive) {
+    if (trail.length && Math.hypot(...local.origin.map((v, i) => v - trail[trail.length - 1][i])) > 600) trail = [];
+    trail.push(local.origin); if (trail.length > 300) trail.shift();
+  }
+  lastSequence = snapshot.sequence; lastSlot = local.slot; draw();
+}
+
+async function poll() {
+  try {
+    const response = await fetch('/state', { cache: 'no-store', signal: AbortSignal.timeout(2000) });
+    if (!response.ok) throw new Error('State unavailable');
+    updateState(await response.json());
+  } catch (error) { el('connection').textContent = 'Disconnected · waiting for the bot'; }
+  setTimeout(poll, 100);
+}
+
+async function start() {
+  try {
+    const response = await fetch('/graph'); if (!response.ok) throw new Error('Map unavailable');
+    graph = await response.json();
+    if (graph.overview) {
+      const img = new Image(); img.src = '/overview.bmp';
+      img.onload = () => {
+        const layer = document.createElement('canvas'); layer.width = img.width; layer.height = img.height;
+        const surface = layer.getContext('2d'); surface.drawImage(img, 0, 0);
+        const pixels = surface.getImageData(0, 0, img.width, img.height);
+        for (let i = 0; i < pixels.data.length; i += 4) {
+          if (pixels.data[i] < 20 && pixels.data[i + 1] > 200 && pixels.data[i + 2] < 20) pixels.data[i + 3] = 0;
+        }
+        surface.putImageData(pixels, 0, 0); overviewImage = layer;
+        el('map-note').textContent = 'Dust2 overview from your game runtime.'; draw();
+      };
+    }
+    resize(); poll();
+  } catch (error) { el('connection').textContent = 'Could not load the map. Reload to retry.'; }
+}
+new ResizeObserver(resize).observe(canvas);
+el('show-graph').addEventListener('change', draw); el('show-trail').addEventListener('change', draw);
+start();
+</script>
+</html>
