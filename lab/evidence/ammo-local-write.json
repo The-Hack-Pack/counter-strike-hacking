@@ -1,0 +1,25 @@
+{
+  "module_scan": {
+    "type": "int",
+    "value": 27,
+    "count": 10,
+    "addresses": [
+      "0x71112065f1c4",
+      "0x71112065f1e8",
+      "0x71112066fd54",
+      "0x71112066fea0",
+      "0x711120670bbc",
+      "0x711120672384",
+      "0x71112067dc34",
+      "0x71112067ef98",
+      "0x71112068058c",
+      "0x711120681558"
+    ]
+  },
+  "write": {
+    "address": "0x71112066fea0",
+    "before": 27,
+    "after": 99
+  },
+  "server_console": "hp_dump\r\n[03:52:03] HP_WORLD {\"slots\":16,\"time\":378.634}\r\n\u001b[0m[03:52:03] HP_SERVER {\"slot\":1,\"name\":\"Instructor\",\"team\":1,\"alive\":1,\"health\":100.0,\"clip\":27,\"weapon\":28,\"origin\":[-1100.000,-800.000,164.031],\"velocity\":[0.000,0.000,0.000],\"frags\":0}\r\n\u001b[0m[03:52:03] HP_SERVER {\"slot\":2,\"name\":\"Target\",\"team\":2,\"alive\":1,\"health\":9895.0,\"clip\":12,\"weapon\":16,\"origin\":[-593.203,-800.000,164.031],\"velocity\":[0.000,0.000,0.000],\"frags\":0}\r\n\u001b[0m"
+}

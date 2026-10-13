@@ -1,0 +1,7 @@
+.lab/
+lab/dist/
+__pycache__/
+*.pyc
+# Instructor plans are kept outside this repository.
+lecture.md
+demo-card.md

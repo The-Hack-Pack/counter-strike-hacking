@@ -5,6 +5,8 @@ services:
     platform: linux/amd64
     restart: unless-stopped
     init: true
+    stdin_open: true
+    tty: true
     ports:
       - "${BIND_IP:-0.0.0.0}:${PORT:-27015}:27015/udp"
     environment:
@@ -13,6 +15,8 @@ services:
     volumes:
       - game-data:/data
       - ./server.cfg:/config/server.cfg:ro
+      - ./classroom.cfg:/config/classroom.cfg:ro
+      - ./protected.cfg:/config/protected.cfg:ro
       - ./mapcycle.txt:/config/mapcycle.txt:ro
     healthcheck:
       test: ["CMD", "python3", "/opt/probe.py", "127.0.0.1", "--query-only"]

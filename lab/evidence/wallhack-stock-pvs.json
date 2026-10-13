@@ -1,0 +1,102 @@
+{
+  "node": 1128,
+  "state": {
+    "version": 1,
+    "wall_time": 3429.658,
+    "map": "maps/de_dust2.bsp",
+    "target": 0,
+    "local": {
+      "slot": 1,
+      "team": 1,
+      "alive": true,
+      "health": 100,
+      "clip_hud": 30,
+      "weapon": 28,
+      "speed": 1.0,
+      "ground": true,
+      "origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "server_origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "eye": [
+        -1100.0,
+        -800.0,
+        181.031
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "punch": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "view": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "players": [
+      {
+        "slot": 1,
+        "name": "Instructor",
+        "team": 1,
+        "dead": false,
+        "age": 0.0,
+        "fresh": true,
+        "visible": true,
+        "head_source": "estimate",
+        "origin": [
+          -1100.0,
+          -800.0,
+          164.031
+        ],
+        "head": [
+          -1100.0,
+          -800.0,
+          192.031
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "Target",
+        "team": 2,
+        "dead": false,
+        "age": 0.0,
+        "fresh": true,
+        "visible": false,
+        "head_source": "hitbox",
+        "origin": [
+          -976.031,
+          -431.969,
+          172.625
+        ],
+        "head": [
+          -986.843,
+          -431.839,
+          192.219
+        ]
+      }
+    ],
+    "probes": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.753,
+      1.0
+    ]
+  },
+  "server_console": "hp_dump\r\n[03:59:55] HP_WORLD {\"slots\":16,\"time\":850.048}\r\n\u001b[0m[03:59:55] HP_SERVER {\"slot\":1,\"name\":\"Instructor\",\"team\":1,\"alive\":1,\"health\":100.0,\"clip\":30,\"weapon\":28,\"origin\":[-1100.000,-800.000,164.031],\"velocity\":[0.000,0.000,0.000],\"frags\":0}\r\n\u001b[0m[03:59:55] HP_SERVER {\"slot\":2,\"name\":\"Target\",\"team\":2,\"alive\":1,\"health\":10000.0,\"clip\":12,\"weapon\":16,\"origin\":[-976.031,-431.996,172.654],\"velocity\":[0.000,0.000,0.000],\"frags\":0}\r\n\u001b[0m"
+}

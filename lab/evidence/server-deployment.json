@@ -1,0 +1,13 @@
+{
+  "local_test_image": "sha256:b2fc4b7ebfa1e26d39d3951f224a56cb2f0386d7d75891cbe72287ea90d19c30",
+  "public_server_image": "sha256:0fb9f2a8ee66747567bb460d94abffa04c8aa8d456b422381e9c9f20623608be",
+  "public_endpoint": "cs.mahaloz.re:27015",
+  "server_host": "192.168.0.25",
+  "server_checkout": "/home/mahaloz/github/counter-strike-hacking",
+  "previous_image_tag": "counter-strike-server:pre-hackpack-20261012",
+  "server_config_backup": "/home/mahaloz/.cache/hackpack-lecture-20261012/server-before.tar.gz",
+  "identical_filesystem_layers": true,
+  "engine_sha256": "5c4f91c4ed1fe70ce93e400ba10391503517874e20a173f1b1b7e1486551ba20",
+  "gamedll_sha256": "b9e0a134a562137825ab45f39d78233b3a9ce48e2f283f47fff5f2e7308984c7",
+  "image_id_note": "Docker export/import changed config IDs; filesystem layers and running engine/game binaries match."
+}

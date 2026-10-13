@@ -1,0 +1,189 @@
+{
+  "implementation": "Python decisions over loopback UDP; native Xash engine connects to dedicated server",
+  "records": 546,
+  "phases": [
+    {
+      "mode": "waiting",
+      "time": 4712.807651652,
+      "target": null,
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "mode": "search",
+      "time": 4714.99046807,
+      "target": null,
+      "origin": [
+        -736.0,
+        -896.0,
+        180.323
+      ]
+    },
+    {
+      "mode": "pursue",
+      "time": 4716.990122639,
+      "target": 2,
+      "origin": [
+        -1123.337,
+        -661.742,
+        164.031
+      ]
+    },
+    {
+      "mode": "engage",
+      "time": 4717.721275262,
+      "target": 2,
+      "origin": [
+        -1140.292,
+        -491.018,
+        164.031
+      ]
+    },
+    {
+      "mode": "pursue",
+      "time": 4721.677257746,
+      "target": 2,
+      "origin": [
+        -1043.621,
+        -447.507,
+        165.082
+      ]
+    }
+  ],
+  "server_kill_logs": [
+    "server-1  | [04:21:24] 10/13/2026 - 04:21:24: \"HackPack-Python<4><ID_bb5506d24da2651c39e942cf949283e><TERRORIST>\" killed \"Target<3><ID_bb5506d24da2651c39e942cf949283e><CT>\" with \"glock18\""
+  ],
+  "first_attack": {
+    "wall_time": 4718.257318073,
+    "mode": "engage",
+    "target": 2,
+    "action": [
+      -4.857629559648839,
+      2.797987966151781,
+      0,
+      0,
+      1
+    ],
+    "state": {
+      "version": 1,
+      "wall_time": 4718.257,
+      "map": "maps/de_dust2.bsp",
+      "target": 0,
+      "local": {
+        "slot": 3,
+        "team": 1,
+        "alive": true,
+        "health": 100,
+        "clip_hud": 20,
+        "weapon": 17,
+        "speed": 1.0,
+        "ground": true,
+        "origin": [
+          -1126.0,
+          -438.653,
+          164.031
+        ],
+        "server_origin": [
+          -1126.047,
+          -438.828,
+          164.031
+        ],
+        "eye": [
+          -1126.0,
+          -438.653,
+          181.031
+        ],
+        "velocity": [
+          1.686,
+          6.37,
+          0.0
+        ],
+        "punch": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "view": [
+          -4.824,
+          3.622,
+          0.0
+        ]
+      },
+      "players": [
+        {
+          "slot": 1,
+          "name": "Instructor",
+          "team": 1,
+          "dead": false,
+          "age": 0.0,
+          "fresh": true,
+          "visible": true,
+          "head_source": "hitbox",
+          "origin": [
+            -1648.0,
+            -800.0,
+            164.031
+          ],
+          "head": [
+            -1644.858,
+            -804.433,
+            186.516
+          ]
+        },
+        {
+          "slot": 2,
+          "name": "Target",
+          "team": 2,
+          "dead": false,
+          "age": 0.0,
+          "fresh": true,
+          "visible": true,
+          "head_source": "hitbox",
+          "origin": [
+            -976.0,
+            -432.0,
+            173.0
+          ],
+          "head": [
+            -985.943,
+            -431.808,
+            192.948
+          ]
+        },
+        {
+          "slot": 3,
+          "name": "HackPack-Python",
+          "team": 1,
+          "dead": false,
+          "age": 0.0,
+          "fresh": true,
+          "visible": true,
+          "head_source": "estimate",
+          "origin": [
+            -1126.047,
+            -438.828,
+            164.031
+          ],
+          "head": [
+            -1126.047,
+            -438.828,
+            192.031
+          ]
+        }
+      ],
+      "probes": [
+        0.404,
+        0.247,
+        0.308,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.677
+      ]
+    }
+  }
+}

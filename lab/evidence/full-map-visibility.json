@@ -1,0 +1,199 @@
+{
+  "stock_pvs": {
+    "version": 1,
+    "wall_time": 5192.275,
+    "map": "maps/de_dust2.bsp",
+    "target": 0,
+    "local": {
+      "slot": 1,
+      "team": 1,
+      "alive": true,
+      "health": 100,
+      "clip_hud": 99,
+      "weapon": 28,
+      "speed": 1.0,
+      "ground": true,
+      "origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "server_origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "eye": [
+        -1100.0,
+        -800.0,
+        181.031
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "punch": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "view": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "players": [
+      {
+        "slot": 1,
+        "name": "Instructor",
+        "team": 1,
+        "dead": false,
+        "age": 0.031,
+        "fresh": true,
+        "visible": true,
+        "head_source": "estimate",
+        "origin": [
+          -1100.0,
+          -800.0,
+          164.031
+        ],
+        "head": [
+          -1100.0,
+          -800.0,
+          192.031
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "Target",
+        "team": 2,
+        "dead": false,
+        "age": 470.668,
+        "fresh": false,
+        "visible": false,
+        "head_source": "estimate",
+        "origin": [
+          448.0,
+          2368.0,
+          -87.219
+        ],
+        "head": [
+          448.0,
+          2368.0,
+          -59.219
+        ]
+      }
+    ],
+    "probes": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.753,
+      1.0
+    ]
+  },
+  "oversharing_enabled": {
+    "version": 1,
+    "wall_time": 5193.105,
+    "map": "maps/de_dust2.bsp",
+    "target": 0,
+    "local": {
+      "slot": 1,
+      "team": 1,
+      "alive": true,
+      "health": 100,
+      "clip_hud": 99,
+      "weapon": 28,
+      "speed": 1.0,
+      "ground": true,
+      "origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "server_origin": [
+        -1100.0,
+        -800.0,
+        164.031
+      ],
+      "eye": [
+        -1100.0,
+        -800.0,
+        181.031
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "punch": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "view": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "players": [
+      {
+        "slot": 1,
+        "name": "Instructor",
+        "team": 1,
+        "dead": false,
+        "age": 0.0,
+        "fresh": true,
+        "visible": true,
+        "head_source": "estimate",
+        "origin": [
+          -1100.0,
+          -800.0,
+          164.031
+        ],
+        "head": [
+          -1100.0,
+          -800.0,
+          192.031
+        ]
+      },
+      {
+        "slot": 2,
+        "name": "Target",
+        "team": 2,
+        "dead": false,
+        "age": 0.0,
+        "fresh": true,
+        "visible": false,
+        "head_source": "hitbox",
+        "origin": [
+          448.0,
+          2464.0,
+          -91.969
+        ],
+        "head": [
+          438.534,
+          2465.544,
+          -71.995
+        ]
+      }
+    ],
+    "probes": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.753,
+      1.0
+    ]
+  },
+  "server_console": "hp_dump\r\n[04:29:18] 10/13/2026 - 04:29:18: HP_WORLD {\"slots\":16,\"time\":1165.978}\r\n\u001b[0m[04:29:18] 10/13/2026 - 04:29:18: HP_SERVER {\"slot\":1,\"name\":\"Instructor\",\"team\":1,\"alive\":1,\"health\":100.0,\"headshot_death\":0,\"clip\":28,\"weapon\":28,\"origin\":[-1100.000,-800.000,164.031],\"velocity\":[0.000,0.000,0.000],\"frags\":1}\r\n\u001b[0m[04:29:18] 10/13/2026 - 04:29:18: HP_SERVER {\"slot\":2,\"name\":\"Target\",\"team\":2,\"alive\":1,\"health\":100.0,\"headshot_death\":0,\"clip\":12,\"weapon\":16,\"origin\":[448.000,2464.000,-91.969],\"velocity\":[0.000,0.000,0.000],\"frags\":0}\r\n\u001b[0m"
+}

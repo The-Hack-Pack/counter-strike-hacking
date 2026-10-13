@@ -1,0 +1,105 @@
+[22:01:15] Console initialized.
+[0m[22:01:15] /home/mahaloz/cs_game_build/counter-strike-hacking/.lab/bot is working directory now
+[0m[22:01:15] Adding directory: ./
+[0m[22:01:15] execing [1;32mcstrike/vfs.cfg[0m
+[0m[22:01:15] FS_AddGameHierarchy( valve )
+[0m[22:01:15] Adding directory: valve/
+[0m[22:01:15] FS_AddGameHierarchy( cstrike )
+[0m[22:01:15] Adding directory: cstrike_downloads/
+[0m[22:01:15] Adding directory: cstrike/
+[0m[22:01:15] Adding directory: cstrike/custom/
+[0m[22:01:15] Touch_Init()
+[0m[22:01:15] [1;33mEXT:[0m MOVETYPE_STEP Position History Based Lerping is enabled
+[0m[22:01:15] Dll loaded for game [1;32m"Counter-Strike"
+[0m[22:01:15] ReGameDLL version: 5.30.0.859-dev
+[0m[22:01:15] execing [1;32mgame_init.cfg[0m
+[0m[22:01:15] execing [1;32mvideo.cfg[0m
+[0m[22:01:15] Loading renderer: gl -> libref_gl.so
+[0m[22:01:15] execing [1;32mopengl.cfg[0m
+[0m[22:01:15] Trying safe opengl mode 0
+[0m[22:01:15] bpp 24
+[0m[22:01:15] Video: [1;32mSDL[0m
+[0m[22:01:15] Video driver: [1;32mx11[0m
+[0m[22:01:15] Window size: [1;32m1280x800[0m ([1;33mreal 1280x800[0m)
+[0m[22:01:15] Window position: [1;32m-240x-100[0m
+[0m[22:01:15] Window mode: [1;36mwindowed[0m
+[0m[22:01:15] Window bordered: [1;32mtrue[0m
+[0m[22:01:15] Window resizable: [1;32mtrue[0m
+[0m[22:01:15] Window maximized: [1;31mfalse[0m
+[0m[22:01:15] Window display index: [1;32m0[0m
+[0m[22:01:15] Window display mode: [1;31mfail: [0mCouldn't find display mode match
+[0m[22:01:15] 
+[0m[22:01:15] GL_VENDOR: Mesa
+[0m[22:01:15] GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+[0m[22:01:15] GL_VERSION: 4.5 (Compatibility Profile) Mesa 25.2.8-0ubuntu0.24.04.2
+[0m[22:01:15] GL_MAX_TEXTURE_SIZE: 16384
+[0m[22:01:15] GL_MAX_TEXTURE_UNITS_ARB: 8
+[0m[22:01:15] GL_MAX_CUBE_MAP_TEXTURE_SIZE_ARB: 16384
+[0m[22:01:15] GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT: 16.0
+[0m[22:01:15] GL_MAX_RECTANGLE_TEXTURE_SIZE: 16384
+[0m[22:01:15] GL_MAX_ARRAY_TEXTURE_LAYERS_EXT: 2048
+[0m[22:01:15] GL_MAX_TEXTURE_COORDS_ARB: 8
+[0m[22:01:15] GL_MAX_TEXTURE_IMAGE_UNITS_ARB: 32
+[0m[22:01:15] GL_MAX_VERTEX_UNIFORM_COMPONENTS_ARB: 16384
+[0m[22:01:15] GL_MAX_VERTEX_ATTRIBS_ARB: 16
+[0m[22:01:15] 
+[0m[22:01:15] MODE: 1280x800
+[0m[22:01:15] 
+[0m[22:01:15] Color 24 bits, Alpha 8 bits, Depth 24 bits, Stencil 8 bits
+[0m[22:01:15] UI_ApplyCustomColors: colors.lst not found
+[0m[22:01:16] Audio: Disabled
+[0m[22:01:16] Init: [1;32mCS16Client[0m ver. 4000 initialized.
+[0m[22:01:16] Hack Pack lab loaded. hp_off resets the source overlay.
+[0m[22:01:16] execing [1;32mvalve.rc[0m
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "s_refgain"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "s_refdelay"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "s_occfactor"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "s_verbwet"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "s_distance"
+[0m[22:01:16] execing [1;32mlanguage.cfg[0m
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "sv_language"
+[0m[22:01:16] execing [1;32mjoystick.cfg[0m
+[0m[22:01:16] execing [1;32mcontroller.cfg[0m
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvanced"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvaxisx"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvaxisy"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvaxisr"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvaxisz"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joysidesensitivity"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "joyadvancedupdate"
+[0m[22:01:16] execing [1;32mautoexec.cfg[0m
+[0m[22:01:16] execing [1;32mconfig.cfg[0m
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "gl_snow_distance"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "gl_snow_melttime"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "gl_snow_rate"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "gl_snow_size"
+[0m[22:01:16] [1;33mWarning: [0mUnknown command "gl_snow_speed"
+[0m[22:01:16] execing [1;32muserconfig.cfg[0m
+[0m[22:01:16] execing [1;32muserconfig.d/touch_defalias.cfg[0m
+[0m[22:01:16] execing [1;32muserconfig.d/userconfig.cfg[0m
+[0m[22:01:16] execing [1;32mmainui.cfg[0m
+[0m[22:01:16] Localize_AddToDict( resource/mainui_english.txt ): couldn't open file. Some strings will not be localized!.
+[0m[22:01:17] server cs.mahaloz.re:27015
+[0m[22:01:17] Connecting to cs.mahaloz.re:27015... (retry #1)
+[0m[22:01:17] Connecting to cs.mahaloz.re:27015... (retry #1, test #0)
+[0m[22:01:18] Trying to connect with modern protocol
+[0m[22:01:18] Spooling demo header.
+[0m[22:01:18] 
+[1;33mBUILD 4212 SERVER (0 CRC)
+Server #1
+[0m[22:01:18] [1;33mEXT:[0m MOVETYPE_STEP Position History Based Lerping is enabled
+[0m[22:01:18] FS_AddGameHierarchy( valve )
+[0m[22:01:18] Adding directory: valve/
+[0m[22:01:18] FS_AddGameHierarchy( cstrike )
+[0m[22:01:18] Adding directory: cstrike_downloads/
+[0m[22:01:18] Adding directory: cstrike/
+[0m[22:01:18] Adding directory: cstrike/custom/
+[0m[22:01:18] Setting up renderer...
+[0m[22:01:18] VoiceCapture_Init: error creating capture device (Audio subsystem is not initialized)
+[0m[22:01:18] [1;33mWarning: [0mNo microphone is available.
+[0m[22:01:20] Cvar_Set: variable 'room_type' not found
+[0m[22:01:20] GetSpriteIndex: item_assaultsuit sprite not found
+[0m[22:01:24] *** [0mHackPack-Python[0m killed [0mTarget[0m with a headshot from [0mak47[0m ***[0m
+[0m[22:01:45] [1;32mNote: [0mIssuing host shutdown due to reason "command"
+[0m[22:01:45] CL_Shutdown()
+[0m

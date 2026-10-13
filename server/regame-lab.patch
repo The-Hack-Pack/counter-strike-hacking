@@ -1,0 +1,87 @@
+--- a/regamedll/dlls/game.cpp
++++ b/regamedll/dlls/game.cpp
+@@ -1,4 +1,59 @@
+ #include "precompiled.h"
++
++// Hack Pack console-only controls for repeatable classroom experiments.
++cvar_t hp_full_visibility = { "hp_full_visibility", "0", FCVAR_SERVER, 0.0f, nullptr };
++cvar_t hp_test_mode = { "hp_test_mode", "0", FCVAR_SERVER, 0.0f, nullptr };
++static CBasePlayer *HP_Player()
++{
++    if (CMD_ARGC() < 2) return nullptr;
++    int slot = atoi(CMD_ARGV(1));
++    if (slot < 1 || slot > gpGlobals->maxClients) return nullptr;
++    CBasePlayer *p = UTIL_PlayerByIndex(slot);
++    return UTIL_IsValidPlayer(p) ? p : nullptr;
++}
++static void HP_Dump()
++{
++    ALERT(at_logged,"HP_WORLD {\"slots\":%d,\"time\":%.3f}\n",gpGlobals->maxClients,gpGlobals->time);
++    for (int i = 1; i <= gpGlobals->maxClients; ++i) {
++        CBasePlayer *p = UTIL_PlayerByIndex(i);
++        if (!UTIL_IsValidPlayer(p)) continue;
++        char name[128]; Q_strlcpy(name, STRING(p->pev->netname), sizeof(name));
++        for (char *c = name; *c; ++c) if (*c == '"' || *c == '\\' || (unsigned char)*c < 32) *c = '_';
++        CBasePlayerWeapon *w = p->m_pActiveItem ? (CBasePlayerWeapon *)p->m_pActiveItem->GetWeaponPtr() : nullptr;
++        ALERT(at_logged, "HP_SERVER {\"slot\":%d,\"name\":\"%s\",\"team\":%d,\"alive\":%d,\"health\":%.1f,\"headshot_death\":%d,\"clip\":%d,\"weapon\":%d,\"origin\":[%.3f,%.3f,%.3f],\"velocity\":[%.3f,%.3f,%.3f],\"frags\":%.0f}\n",
++            i,name,(int)p->m_iTeam,p->IsAlive()?1:0,p->pev->health,p->m_bHeadshotKilled?1:0,w?w->m_iClip:-1,w?w->m_iId:0,
++            p->pev->origin.x,p->pev->origin.y,p->pev->origin.z,
++            p->pev->velocity.x,p->pev->velocity.y,p->pev->velocity.z,p->pev->frags);
++    }
++}
++static void HP_Place()
++{
++    if (!hp_test_mode.value) { ALERT(at_console,"hp_test_mode is disabled\n"); return; }
++    CBasePlayer *p=HP_Player(); if (!p || CMD_ARGC()!=6) return;
++    Vector pos(atof(CMD_ARGV(2)),atof(CMD_ARGV(3)),atof(CMD_ARGV(4)));
++    p->pev->velocity=Vector(0,0,0); p->pev->basevelocity=Vector(0,0,0);
++    SET_ORIGIN(p->edict(),pos); p->pev->v_angle=Vector(0,atof(CMD_ARGV(5)),0);
++    p->pev->angles=p->pev->v_angle; p->pev->fixangle=1;
++}
++static void HP_Equip()
++{
++    if (!hp_test_mode.value) return;
++    CBasePlayer *p=HP_Player(); if (!p || CMD_ARGC()!=3) return;
++    const char *item=CMD_ARGV(2); if (strncmp(item,"weapon_",7)) return;
++    p->GiveNamedItem(item); p->GiveAmmo(90,"762Nato",90); p->GiveAmmo(90,"556Nato",90);
++    p->GiveAmmo(35,"50AE",35); p->GiveAmmo(30,"338Magnum",30);
++}
++static void HP_Respawn()
++{
++    if (!hp_test_mode.value) return;
++    CBasePlayer *p=HP_Player(); if (p) p->RoundRespawn();
++}
++static void HP_Health()
++{
++    if (!hp_test_mode.value) return;
++    CBasePlayer *p=HP_Player(); if (!p || CMD_ARGC()!=3) return;
++    p->pev->health=clamp((float)atof(CMD_ARGV(2)),1.0f,10000.0f);
++}
+ 
+ cvar_t *g_pskill          = nullptr;
+ cvar_t *g_psv_gravity     = nullptr;
+@@ -259,6 +314,13 @@
+ 
+ void EXT_FUNC GameDLLInit()
+ {
++    CVAR_REGISTER(&hp_full_visibility);
++    CVAR_REGISTER(&hp_test_mode);
++    ADD_SERVER_COMMAND("hp_dump",HP_Dump);
++    ADD_SERVER_COMMAND("hp_place",HP_Place);
++    ADD_SERVER_COMMAND("hp_equip",HP_Equip);
++    ADD_SERVER_COMMAND("hp_health",HP_Health);
++    ADD_SERVER_COMMAND("hp_respawn",HP_Respawn);
+ 	// By default, direct dbg reporting...
+ 	SpewOutputFunc(GameDLL_SpewHandler);
+ 
+--- a/regamedll/dlls/client.cpp
++++ b/regamedll/dlls/client.cpp
+@@ -4574,7 +4574,7 @@
+ 	if ((ent->v.effects & EF_FORCEVISIBILITY) != EF_FORCEVISIBILITY)
+ #endif
+ 	{
+-		if (ent != host)
++		if (ent != host && CVAR_GET_FLOAT("hp_full_visibility") <= 0.0f)
+ 		{
+ 			if (!CheckEntityRecentlyInPVS(hostnum, e, gpGlobals->time))
+ 			{

@@ -1,0 +1,34 @@
+--- a/engine/server/sv_main.c
++++ b/engine/server/sv_main.c
+@@ -19,6 +19,8 @@
+ #include "platform/platform.h"
+ 
+ // server cvars
++// Hack Pack classroom switch. Default preserves upstream timing validation.
++CVAR_DEFINE_AUTO( hp_validate_cmdtime, "1", FCVAR_SERVER, "validate client command time (0: classroom speed demo)" );
+ CVAR_DEFINE_AUTO( sv_lan, "0", 0, "server is a lan server ( no heartbeat, no authentication, no non-class C addresses, 9999.0 rate, etc." );
+ CVAR_DEFINE_AUTO( sv_lan_rate, "20000.0", 0, "rate for lan server" );
+ CVAR_DEFINE_AUTO( sv_nat, "0", 0, "enable NAT bypass for this server" );
+@@ -277,6 +279,14 @@
+ 		if( cl->connecttime == 0.0 )
+ 		{
+ 			cl->connecttime = host.realtime;
++		}
++
++		if( !hp_validate_cmdtime.value )
++		{
++			cl->ignorecmdtime = 0.0;
++			cl->cmdtime = 0.0;
++			cl->connecttime = host.realtime;
++			continue;
+ 		}
+ 
+ 		float diff = cl->connecttime + cl->cmdtime - host.realtime;
+@@ -983,6 +993,7 @@
+ 	Cvar_RegisterVariable( &sv_enttools_maxfire );
+ 
+ 	Cvar_RegisterVariable( &sv_speedhack_kick );
++	Cvar_RegisterVariable( &hp_validate_cmdtime );
+ 
+ 	Cvar_RegisterVariable( &sv_allow_joystick );
+ 	Cvar_RegisterVariable( &sv_allow_mouse );

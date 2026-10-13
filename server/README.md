@@ -27,6 +27,31 @@ with 16 slots, and restarts unless explicitly stopped. Public master-server
 listing is disabled; players connect directly. Remote console and cheats are
 disabled by default. Logs are rotated by Docker.
 
+The Hack Pack lecture image applies the two small source patches in this
+directory. Startup now sets `sv_speedhack_kick 0`, `hp_validate_cmdtime 0`, and
+`sv_enablebunnyhopping 1`; ammo stays authoritative with `mp_infinite_ammo 0`.
+The timing switch defaults to 1 in the engine itself, so the upstream check
+remains active unless explicitly disabled by configuration.
+
+Use `exec classroom.cfg` in the server console for the instructor's practice
+rules and repeatable positioning/equipment controls. `exec protected.cfg`
+restores timing/bunny-hop protections and disables fixture/oversharing controls.
+`exec server.cfg` restores the requested permissive startup profile and the
+ordinary round/buying rules. Client installation and controls are documented in
+[lab/README.md](../lab/README.md).
+
+The actual public deployment remains on `192.168.0.25`, reachable at
+`cs.mahaloz.re:27015`. The lecture image and configs were deployed there through
+the existing `honohono-local` SSH profile; the instructor's Linux workstation is
+`192.168.0.52`, which also has a local test server. From the instructor checkout,
+`../lab/server.sh 'hp_dump'` (or `./lab/server.sh` from the repository root)
+controls the public host. It uses a task-local known-hosts file whose keys were
+matched against the user's existing trusted keys, without changing global SSH
+configuration. The pre-lecture image is retained as
+`counter-strike-server:pre-hackpack-20261012`, and the old server directory is
+backed up on the public host at
+`/home/mahaloz/.cache/hackpack-lecture-20261012/server-before.tar.gz`.
+
 ```sh
 docker compose ps
 docker compose restart server

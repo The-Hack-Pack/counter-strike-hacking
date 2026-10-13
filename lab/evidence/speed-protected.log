@@ -1,0 +1,9 @@
+server-1  | hp_validate_cmdtime 1
+server-1  | [04:18:04] 10/13/2026 - 04:18:04: Server cvar "hp_validate_cmdtime" = "1"
+server-1  | [04:18:04] "hp_validate_cmdtime" changed to "1"
+server-1  | [04:18:06] Warning: Instructor time is faster than server time (speed hack?)
+server-1  | [04:18:07] Warning: Instructor time is faster than server time (speed hack?)
+server-1  | [04:18:08] Warning: Instructor time is faster than server time (speed hack?)
+server-1  | hp_validate_cmdtime 0
+server-1  | [04:18:08] 10/13/2026 - 04:18:08: Server cvar "hp_validate_cmdtime" = "0"
+server-1  | [04:18:08] "hp_validate_cmdtime" changed to "0"

@@ -1,0 +1,16 @@
+[
+  {
+    "sha256": "559503cc93db2b604ffa395c754ca24951e086a65a1563af1b0ed77e7a6ed67d",
+    "offset": 347426,
+    "before": "0fbe510289d6",
+    "after": "ba6300000090",
+    "build": "client_amd64.so (original GCC 13)"
+  },
+  {
+    "sha256": "5b8640c381ef13497dfba5e28c901a3e1f877f06110de278aabe8958f905b814",
+    "offset": 349090,
+    "before": "0fbe510289d6",
+    "after": "ba6300000090",
+    "build": "Final lab GCC 13 overlay (random qport)"
+  }
+]

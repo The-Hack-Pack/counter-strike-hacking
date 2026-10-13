@@ -5,15 +5,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ARG XASH_REV=fd0cd6afdda9dff94346af60884b99876001ca5f
 # Matches cs16-client 6a49bcc6f5292dec13046b23140c1e555dca8b31's submodule.
 ARG REGAMEDLL_REV=7be9d59dca1ee11d270e4631d7e3be0c67a1a82b
+COPY xash-lab.patch /tmp/xash-lab.patch
+COPY regame-lab.patch /tmp/regame-lab.patch
 RUN git init /src/xash && cd /src/xash \
     && git remote add origin https://github.com/FWGS/xash3d-fwgs.git \
     && git fetch --depth 1 origin "$XASH_REV" && git checkout FETCH_HEAD \
+    && git apply /tmp/xash-lab.patch \
     && git submodule update --init --depth 1 3rdparty/library_suffix 3rdparty/libbacktrace/libbacktrace \
     && ./waf configure --dedicated --64bits --disable-mbedtls --prefix=/ \
     && ./waf build -j4 && ./waf install --destdir=/opt/xash
 RUN git init /src/regame && cd /src/regame \
     && git remote add origin https://github.com/Velaron/ReGameDLL_CS.git \
     && git fetch --depth 1 origin "$REGAMEDLL_REV" && git checkout FETCH_HEAD \
+    && git apply /tmp/regame-lab.patch \
     && cmake -S . -B build -DXASH_COMPAT=ON -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/opt/xash \
     && cmake --build build -j4 && cmake --install build

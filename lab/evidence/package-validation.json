@@ -1,0 +1,32 @@
+{
+  "checked_utc": "2026-10-13T05:46:06.922420+00:00",
+  "archive_payload_library_sha256": "5b8640c381ef13497dfba5e28c901a3e1f877f06110de278aabe8958f905b814",
+  "original_library_sha256": "559503cc93db2b604ffa395c754ca24951e086a65a1563af1b0ed77e7a6ed67d",
+  "steps": [
+    {
+      "tool": "lab/install.py",
+      "undo": false,
+      "exit_code": 0
+    },
+    {
+      "tool": "lab/tools/patch_clip.py",
+      "undo": false,
+      "exit_code": 0
+    },
+    {
+      "tool": "lab/tools/patch_clip.py",
+      "undo": true,
+      "exit_code": 0
+    },
+    {
+      "tool": "lab/install.py",
+      "undo": true,
+      "exit_code": 0
+    }
+  ],
+  "bit_identical_original_restored": true,
+  "previous_function_keys_restored": true,
+  "other_student_settings_retained": true,
+  "tool_tests_passed": 5,
+  "fixture": "Temporary extracted package and student-game directory containing the actual original client library; no game assets required for installer validation."
+}

@@ -1,0 +1,10 @@
+test_exact_edit_and_bit_identical_undo (test_tools.BinaryPatchTests.test_exact_edit_and_bit_identical_undo) ... ok
+test_undo_refuses_unrelated_changes (test_tools.BinaryPatchTests.test_undo_refuses_unrelated_changes) ... ok
+test_unknown_build_is_not_written (test_tools.BinaryPatchTests.test_unknown_build_is_not_written) ... ok
+test_readonly_mapping_is_rejected (test_tools.ProcessMemoryTests.test_readonly_mapping_is_rejected) ... ok
+test_selected_typed_address_only (test_tools.ProcessMemoryTests.test_selected_typed_address_only) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.205s
+
+OK

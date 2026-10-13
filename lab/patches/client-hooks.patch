@@ -1,0 +1,102 @@
+--- a/cl_dll/hud.h
++++ b/cl_dll/hud.h
+@@ -1,3 +1,4 @@
++#include "hackpack_lab.h"
+ /***
+ *
+ *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+@@ -154,6 +155,9 @@
+ //
+ class CHudAmmo: public CHudBase
+ {
++public:
++	WEAPON *HP_Weapon() const { return m_pWeapon; }
++private:
+ 	friend class WeaponsResource;
+ 	friend class HistoryResource;
+ 
+--- a/cl_dll/cdll_int.cpp
++++ b/cl_dll/cdll_int.cpp
+@@ -1,3 +1,4 @@
++#include "hackpack_lab.h"
+ /***
+ *
+ *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+@@ -210,6 +211,7 @@
+ void DLLEXPORT HUD_PlayerMove( struct playermove_s *ppmove, int server )
+ {
+ 	PM_Move( ppmove, server );
++	HP_PlayerMove(ppmove);
+ }
+ 
+ #ifdef _CS16CLIENT_ENABLE_GSRC_SUPPORT
+@@ -276,6 +278,7 @@
+ 	LoadMenuInterface();
+ 	InitInput();
+ 	gHUD.Init();
++	HP_Init();
+ 	
+ 	// Initialize menu if it's loaded
+ 	if( g_pMenu && !g_pMenu->Initialize( Sys_GetFactoryThis() ) )
+@@ -298,6 +301,7 @@
+ int DLLEXPORT HUD_Redraw( float time, int intermission )
+ {
+ 	gHUD.Redraw( time, intermission );
++	HP_Draw();
+ 
+ 	return 1;
+ }
+@@ -346,6 +350,7 @@
+ 
+ void DLLEXPORT HUD_Frame( double time )
+ {
++	HP_Frame();
+ #ifdef _CS16CLIENT_ENABLE_GSRC_SUPPORT
+ 	gEngfuncs.VGui_ViewportPaintBackground(HUD_GetRect());
+ #endif
+--- a/cl_dll/input.cpp
++++ b/cl_dll/input.cpp
+@@ -1,3 +1,4 @@
++#include "hackpack_lab.h"
+ //========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+ //
+ // Purpose: 
+@@ -762,6 +763,8 @@
+ 		VectorCopy( viewangles, oldangles );
+ 	}
+ 
++
++	HP_Move(cmd, active);
+ }
+ 
+ /*
+--- a/cl_dll/entity.cpp
++++ b/cl_dll/entity.cpp
+@@ -1,3 +1,4 @@
++#include "hackpack_lab.h"
+ //========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+ //
+ // Purpose: 
+@@ -84,6 +85,7 @@
+ */
+ void DLLEXPORT HUD_TxferLocalOverrides( struct entity_state_s *state, const struct clientdata_s *client )
+ {
++	HP_ClientData(client);
+ 	VectorCopy( client->origin, state->origin );
+ 
+ 	// Spectator
+--- a/cl_dll/StudioModelRenderer.cpp
++++ b/cl_dll/StudioModelRenderer.cpp
+@@ -1,3 +1,4 @@
++#include "hackpack_lab.h"
+ /***
+ *
+ *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
+@@ -739,6 +740,7 @@
+ 
+ void CStudioModelRenderer::StudioSaveBones(void)
+ {
++	HP_Bones(m_pCurrentEntity, m_pStudioHeader, *m_pbonetransform);
+ 	int i;
+ 
+ 	mstudiobone_t *pbones;
