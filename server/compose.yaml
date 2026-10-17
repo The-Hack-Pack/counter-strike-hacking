@@ -11,10 +11,12 @@ services:
       - "${BIND_IP:-0.0.0.0}:${PORT:-27015}:27015/udp"
     environment:
       MAP: ${MAP:-de_dust2}
-      MAXPLAYERS: ${MAXPLAYERS:-16}
+      MAXPLAYERS: ${MAXPLAYERS:-32}
     volumes:
       - game-data:/data
       - ./server.cfg:/config/server.cfg:ro
+      - ./game_init.cfg:/config/game_init.cfg:ro
+      - ./BotProfile.db:/config/BotProfile.db:ro
       - ./classroom.cfg:/config/classroom.cfg:ro
       - ./protected.cfg:/config/protected.cfg:ro
       - ./mapcycle.txt:/config/mapcycle.txt:ro

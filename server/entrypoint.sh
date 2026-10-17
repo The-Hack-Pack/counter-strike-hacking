@@ -23,8 +23,10 @@ fi
 
 cp -a /opt/xash/. /data/
 cp /config/server.cfg /data/cstrike/server.cfg
+cp /config/game_init.cfg /data/cstrike/game_init.cfg
+cp /config/BotProfile.db /data/cstrike/BotProfile.db
 cp /config/classroom.cfg /data/cstrike/classroom.cfg
 cp /config/protected.cfg /data/cstrike/protected.cfg
 cp /config/mapcycle.txt /data/cstrike/mapcycle.txt
 exec /data/xash -dedicated -console -game cstrike -ip 0.0.0.0 -port 27015 \
-    -nomaster +maxplayers "${MAXPLAYERS:-16}" +map "${MAP:-de_dust2}"
+    -nomaster +maxplayers "${MAXPLAYERS:-32}" +map "${MAP:-de_dust2}"

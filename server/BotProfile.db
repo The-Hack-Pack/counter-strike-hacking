@@ -1,0 +1,39 @@
+// Original profiles for the Hack Pack server's built-in ReGameDLL bots.
+Default
+    Skill = 50
+    Aggression = 50
+    Teamwork = 75
+    ReactionTime = 0.3
+    AttackDelay = 0
+    Difficulty = EASY+NORMAL+HARD+EXPERT
+    VoicePitch = 100
+    Skin = 0
+End
+
+Template Standard
+End
+
+Standard Ada
+End
+Standard Alan
+End
+Standard Grace
+End
+Standard Dennis
+End
+Standard Ken
+End
+Standard Barbara
+End
+Standard Edsger
+End
+Standard Donald
+End
+Standard Margaret
+End
+Standard Claude
+End
+Standard Frances
+End
+Standard John
+End

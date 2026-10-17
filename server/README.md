@@ -7,6 +7,11 @@ matches that client's `3rdparty/ReGameDLL_CS` submodule at client commit
 `6a49bcc6f5292dec13046b23140c1e555dca8b31`. This is a protocol-49 Xash server;
 use CS16Client with Xash3D FWGS to connect, rather than the stock Steam client.
 
+The class deployment was shut down on 2026-10-17 with `docker compose down`.
+Its container was removed, so it will not restart on host reboot. Downloaded
+assets and generated navigation data remain in the Docker volume for reuse.
+The instructions below are for explicitly starting a future deployment.
+
 ## Run
 
 ```sh
@@ -23,9 +28,25 @@ volume across rebuilds and restarts. No Steam credentials are needed. Clients
 still need their own game assets as described in CS16Client's instructions.
 
 The server runs as an unprivileged user, publishes UDP 27015, starts `de_dust2`
-with 16 slots, and restarts unless explicitly stopped. Public master-server
+with 32 slots, and restarts unless explicitly stopped. Public master-server
 listing is disabled; players connect directly. Remote console and cheats are
 disabled by default. Logs are rotated by Docker.
+
+Built-in ReGameDLL bots keep ten active participants using `bot_quota_mode fill`:
+an empty server has five bots per team; one playing human leaves nine bots;
+ten or more playing humans leave no bots. The server accepts up to 32
+players, with automatic team balancing and `mp_limitteams 1` for 16 versus 16.
+This engine's protocol encodes player slots with five bits, so 32 is the hard
+limit; setting `MAXPLAYERS=40` is clamped to 32. Raising that limit requires
+coordinated engine/protocol and game-code changes on both servers and clients.
+Spectators occupy slots but do not count toward the ten active participants.
+Bot counts adjust at round boundaries; bots also vacate slots for joining humans.
+The optional `classroom.cfg` deliberately disables team balancing for practice.
+
+`game_init.cfg` enables bots before the game initializes, and `BotProfile.db`
+provides the server's bot names and skill settings. Voice chatter is disabled.
+On a map's first use, bots generate navigation data, briefly pausing normal play;
+the generated `.nav` files persist in the game-data volume for future starts.
 
 The Hack Pack lecture image applies the two small source patches in this
 directory. Startup now sets `sv_speedhack_kick 0`, `hp_validate_cmdtime 0`, and
@@ -40,8 +61,8 @@ restores timing/bunny-hop protections and disables fixture/oversharing controls.
 ordinary round/buying rules. Client installation and controls are documented in
 [lab/README.md](../lab/README.md).
 
-The actual public deployment remains on `192.168.0.25`, reachable at
-`cs.mahaloz.re:27015`. The lecture image and configs were deployed there through
+The class deployment ran on `192.168.0.25` at `cs.mahaloz.re:27015` until its
+shutdown. The lecture image and configs were deployed there through
 the existing `honohono-local` SSH profile; the instructor's Linux workstation is
 `192.168.0.52`, which also has a local test server. From the instructor checkout,
 `../lab/server.sh 'hp_dump'` (or `./lab/server.sh` from the repository root)
@@ -63,7 +84,7 @@ settings (run `docker compose up -d` after editing these):
 
 ```dotenv
 MAP=de_dust2
-MAXPLAYERS=16
+MAXPLAYERS=32
 PORT=27015
 BIND_IP=0.0.0.0
 ```
@@ -102,7 +123,8 @@ and [Spectrum](https://developers.cloudflare.com/spectrum/).
 
 On this host, the initial deployment changed `cs.mahaloz.re` to DNS-only and
 created a UPnP mapping on `192.168.0.1` from public UDP 27015 to
-`192.168.0.25:27015`, with no lease expiry. A router reboot can still erase UPnP
+`192.168.0.25:27015`, with no lease expiry. That mapping was removed when the
+class server was shut down on 2026-10-17. A router reboot can also erase UPnP
 mappings. For persistence across router reboots, add the equivalent permanent
 forward in the router UI. To recreate the UPnP mapping from this host:
 
